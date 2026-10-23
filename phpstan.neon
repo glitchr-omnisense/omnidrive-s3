@@ -1,0 +1,12 @@
+# PHPStan at the highest level. phpstan-baseline.neon lists the violations accepted when the
+# package started (none, 2026-10-23): the CI fails on any other.
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - .
+    excludePaths:
+        - vendor
+    reportUnmatchedIgnoredErrors: false

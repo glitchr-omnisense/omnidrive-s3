@@ -1,0 +1,28 @@
+{
+    "name": "omnidrive/s3",
+    "type": "library",
+    "description": "Omnidrive S3: an S3 bucket - AWS, MinIO, Scaleway, OVHcloud, Cloudflare R2... - as an omnidrive drive, through league/flysystem-async-aws-s3: its region or endpoint, its keys, a prefix, public and signed temporary addresses.",
+    "keywords": ["storage", "s3", "aws", "minio", "flysystem", "omnidrive"],
+    "homepage": "https://github.com/glitchr-studio/omnidrive-s3",
+    "license": "MIT",
+    "authors": [{"name": "Marco Meyer", "email": "marco.meyer@glitchr.io"}],
+    "require": {
+        "php": ">=8.2",
+        "async-aws/simple-s3": "^2.1",
+        "league/flysystem-async-aws-s3": "^3.0",
+        "omniscient/omnidrive": "^1.0@dev",
+        "symfony/http-client-contracts": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "symfony/http-client": "^6.4|^7.0|^8.0"
+    },
+    "autoload": {
+        "psr-4": {"Omnidrive\\S3\\": ""},
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "autoload-dev": {
+        "psr-4": {"Omnidrive\\S3\\Tests\\": "Tests/"}
+    },
+    "config": {"sort-packages": true}
+}
