@@ -1,11 +1,11 @@
 # omnidrive/s3
 
-An S3 bucket as an [omnidrive](https://github.com/glitchr-studio/omnidrive) drive - AWS, or any
+An S3 bucket as an [omnidrive](https://github.com/glitchr-omnisense/omnidrive) drive - AWS, or any
 service that speaks S3: MinIO, Scaleway, OVHcloud, Cloudflare R2, Garage... - through
 league/flysystem-async-aws-s3 (AsyncAws).
 
 ```sh
-composer require omniscient/omnidrive omnidrive/s3
+composer require omnisense/omnidrive omnidrive/s3
 ```
 
 ```php

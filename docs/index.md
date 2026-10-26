@@ -1,6 +1,6 @@
 # omnidrive/s3
 
-An S3 bucket as an [omniscient/omnidrive](https://github.com/glitchr-studio/omnidrive) drive - AWS,
+An S3 bucket as an [omnisense/omnidrive](https://github.com/glitchr-omnisense/omnidrive) drive - AWS,
 or any service that speaks S3: MinIO, Scaleway, OVHcloud, Cloudflare R2, Garage... - through
 league/flysystem-async-aws-s3 (`AsyncAwsS3Adapter` over AsyncAws's `SimpleS3Client`).
 
@@ -12,10 +12,10 @@ league/flysystem-async-aws-s3 (`AsyncAwsS3Adapter` over AsyncAws's `SimpleS3Clie
 ## Installation
 
 ```sh
-composer require omniscient/omnidrive omnidrive/s3
+composer require omnisense/omnidrive omnidrive/s3
 ```
 
-Requires PHP 8.2, `omniscient/omnidrive` (1.x), `league/flysystem-async-aws-s3` (^3.0),
+Requires PHP 8.2, `omnisense/omnidrive` (1.x), `league/flysystem-async-aws-s3` (^3.0),
 `async-aws/simple-s3` (^2.1) and `symfony/http-client-contracts`; AsyncAws calls S3 through
 `symfony/http-client`.
 
