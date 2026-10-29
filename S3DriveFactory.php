@@ -3,7 +3,6 @@
 namespace Omnidrive\S3;
 
 use AsyncAws\SimpleS3\SimpleS3Client;
-use League\Flysystem\AsyncAwsS3\AsyncAwsS3Adapter;
 use League\Flysystem\AsyncAwsS3\PortableVisibilityConverter;
 use Omnidrive\Config;
 use Omnidrive\Drive;
@@ -56,7 +55,7 @@ final class S3DriveFactory extends FlysystemDriveFactory
             'pathStyleEndpoint' => $c->bool('path_style') ? 'true' : null,
         ], static fn (?string $value) => null !== $value), null, $this->http);
 
-        $adapter = new AsyncAwsS3Adapter(
+        $adapter = new S3Adapter(
             $client,
             (string) $c->string('bucket'),
             trim((string) $c->string('prefix'), '/'),

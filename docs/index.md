@@ -120,11 +120,11 @@ image/jpeg private 16d37bc3b1ee7d3b6ec0455727574ddb
 The service's refusals are `DriveException`s whose message carries AsyncAws's (the status, S3's
 error code); a missing object read is a `FileNotFoundException`.
 
-> [!WARNING]
-> Known defect: a request refused with 403 (wrong keys, no permission) makes `exists()` answer
-> `false` and `read()` throw `FileNotFoundException`, where it is expected to be a
-> `DriveException` naming the refusal; AWS also answers 403 for a missing object to a caller
-> without `s3:ListBucket`.
+A file's existence is asked with HeadObject: 200 is there, 404 is not, any other answer a
+failure - a request refused with 403 (wrong keys, no permission) makes `exists()` throw and
+`read()` a `DriveException` naming the 403, never a `FileNotFoundException`. AWS answers 404 for
+a missing object only to a caller allowed `s3:ListBucket` on the bucket, 403 to one without: give
+the drive's keys that permission, or every missing file is a failure.
 
 A missing `bucket` is an `InvalidConfigException`.
 

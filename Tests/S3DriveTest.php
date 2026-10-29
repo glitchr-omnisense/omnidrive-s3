@@ -14,6 +14,38 @@ final class S3DriveTest extends TestCase
 {
     private const OPTIONS = ['bucket' => 'site', 'endpoint' => 'http://minio:9000', 'path_style' => '1', 'key' => 'test-key', 'secret' => 'test-secret', 'prefix' => '/uploads/'];
 
+    /**
+     * A request S3 refuses (403: wrong keys, no permission; HeadObject answers it with no body)
+     * is the drive's failure: exists() fails, read() is a DriveException, not "not found". Only a
+     * 404 is a file that is not there - AWS answers 404 for a missing object to a caller with
+     * s3:ListBucket, 403 to one without (Amazon S3's HeadObject reference, "Permissions").
+     */
+    public function testARefusedRequestIsNotAMissingFile(): void
+    {
+        $answer = 403;
+        $http = new MockHttpClient(static function (string $method) use (&$answer) {
+            return 'HEAD' === $method || 403 === $answer
+                ? new MockResponse('', ['http_code' => $answer])
+                : new MockResponse('<?xml version="1.0" encoding="UTF-8"?><Error><Code>NoSuchKey</Code><Message>The specified key does not exist.</Message></Error>', ['http_code' => 404]);
+        });
+        $drive = (new S3DriveFactory($http))->create(self::OPTIONS, 'uploads');
+
+        foreach (['exists' => fn () => $drive->exists('a.txt'), 'read' => fn () => $drive->read('a.txt')] as $operation => $call) {
+            try {
+                $call();
+                self::fail("$operation went through a 403");
+            } catch (\Omnidrive\Exception\DriveException $e) {
+                self::assertNotInstanceOf(\Omnidrive\Exception\FileNotFoundException::class, $e, $operation);
+                self::assertStringContainsString('403', $e->getMessage(), $operation);
+            }
+        }
+
+        $answer = 404;
+        self::assertFalse($drive->exists('a.txt'), 'a 404 is a missing file');
+        $this->expectException(\Omnidrive\Exception\FileNotFoundException::class);
+        $drive->read('a.txt');
+    }
+
     public function testAWriteIsAPutUnderThePrefixWithTheAclOfItsVisibility(): void
     {
         /** @var list<array{string, string, array<string, list<string>>}> $requests */
