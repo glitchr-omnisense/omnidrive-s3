@@ -24,5 +24,6 @@
     "autoload-dev": {
         "psr-4": {"Omnidrive\\S3\\Tests\\": "Tests/"}
     },
+    "extra": {"omnisense": {"policy": "policy.json"}},
     "config": {"sort-packages": true}
 }

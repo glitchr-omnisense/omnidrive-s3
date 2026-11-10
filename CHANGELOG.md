@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Added
+
+- Its usage policy, on omnisense/contracts: `policy.json` (named in `composer.json`,
+  `extra.omnisense.policy`), verified 2026-11-10; the README's Usage policy section says which
+  writes a client's retry could replay (none doubles a file). `Tests/PolicyTest.php`.
+
 ### Fixed
 
 - A request S3 refuses (403: wrong keys, no permission) is the drive's failure: `exists()` throws

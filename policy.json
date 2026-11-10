@@ -1,0 +1,38 @@
+{
+    "$schema": "https://github.com/glitchr-omnisense/contracts/blob/1.x/resources/usage-policy.schema.json",
+    "provider": "s3",
+    "rateLimits": null,
+    "concurrency": null,
+    "rights": {
+        "commercial": "contract",
+        "openSourceRequired": false,
+        "caching": {
+            "permission": "allowed",
+            "maxTtl": null
+        },
+        "storage": "allowed",
+        "redistribution": "contract",
+        "attribution": {
+            "required": false,
+            "text": null,
+            "url": null,
+            "where": []
+        },
+        "licence": null
+    },
+    "requirements": {
+        "key": true,
+        "userAgent": {
+            "required": false,
+            "pattern": null
+        }
+    },
+    "provenance": {
+        "terms": "https://aws.amazon.com/service-terms/",
+        "policy": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html",
+        "verifiedAt": "2026-11-10",
+        "declaredBy": "maintainer",
+        "contact": null,
+        "notes": "Amazon S3 or any S3-compatible store the site names (its endpoint: AWS, a MinIO it runs, another host's): the terms are the store's - for AWS, the AWS Customer Agreement (https://aws.amazon.com/agreement/) and the Service Terms (read 2026-11-10, last updated 2026-11-05), use under that contract ('contract'), the content the customer's own. Limits: AWS publishes no quota but a performance figure - 'at least 3,500 PUT/COPY/POST/DELETE or 5,500 GET/HEAD requests per second per partitioned Amazon S3 prefix', scaling gradually, with 503 Slow Down while it scales - counted per prefix, which no scope of the schema counts; so unknown (null) here, the figure in this note. Another S3-compatible host's limits are its own. The key is the access key and its secret. Writes and retries: async-aws retries a request after a 0, 423, 425, 429, 500, 502, 503, 504, 507 or 510 answer (and some 400/403 AWS error codes: throttling, a request timeout), whatever its method. A PutObject, a DeleteObject and a CopyObject of the same key are idempotent: a replay leaves the same object. A multipart upload's CreateMultipartUpload replayed leaves an incomplete upload that is never completed (it costs storage until aborted: give the bucket an AbortIncompleteMultipartUpload lifecycle rule), never a second object; an UploadPart replayed replaces the same part."
+    }
+}

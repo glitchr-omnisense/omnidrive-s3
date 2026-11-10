@@ -50,6 +50,18 @@ $drives->get('archive')->temporaryUrl('2026/report.pdf', new DateTimeImmutable('
   `OMNIDRIVE_S3_ACL=1` runs that test against one that does); uploads over 5 GB (AsyncAws's
   multipart upload, never run here).
 
+## Usage policy
+
+`policy.json` (omnisense/contracts' schema, named in `composer.json` as `extra.omnisense.policy`;
+read on 2026-11-10): AWS's terms (the Customer Agreement, the Service Terms) or the S3-compatible
+host's. Limits unknown (`null`): AWS publishes a performance figure per prefix, not a quota (in the
+notes). async-aws retries a request after a 429, a 5xx or a transport error, whatever its method:
+PutObject, DeleteObject and CopyObject of a key are idempotent; a replayed CreateMultipartUpload
+leaves an incomplete upload (an AbortIncompleteMultipartUpload lifecycle rule clears them), never a
+second object. Nothing in the drive counts calls; [the family's
+page](https://github.com/glitchr-omnisense/omnidrive/blob/1.x/docs/policies.md) has every
+provider's.
+
 ## Responsibility
 
 Unofficial; affiliated with none of the services it reaches, nor with The PHP League or AsyncAws.
