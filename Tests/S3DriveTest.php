@@ -12,6 +12,9 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 /** The options as AsyncAws is given them, offline: what is sent, what is signed. */
 final class S3DriveTest extends TestCase
 {
+    /** The status S3 answers in testARefusedRequestIsNotAMissingFile(). */
+    private int $answer = 403;
+
     private const OPTIONS = ['bucket' => 'site', 'endpoint' => 'http://minio:9000', 'path_style' => '1', 'key' => 'test-key', 'secret' => 'test-secret', 'prefix' => '/uploads/'];
 
     /**
@@ -22,10 +25,10 @@ final class S3DriveTest extends TestCase
      */
     public function testARefusedRequestIsNotAMissingFile(): void
     {
-        $answer = 403;
-        $http = new MockHttpClient(static function (string $method) use (&$answer) {
-            return 'HEAD' === $method || 403 === $answer
-                ? new MockResponse('', ['http_code' => $answer])
+        $this->answer = 403;
+        $http = new MockHttpClient(function (string $method) {
+            return 'HEAD' === $method || 403 === $this->answer
+                ? new MockResponse('', ['http_code' => $this->answer])
                 : new MockResponse('<?xml version="1.0" encoding="UTF-8"?><Error><Code>NoSuchKey</Code><Message>The specified key does not exist.</Message></Error>', ['http_code' => 404]);
         });
         $drive = (new S3DriveFactory($http))->create(self::OPTIONS, 'uploads');
@@ -40,7 +43,7 @@ final class S3DriveTest extends TestCase
             }
         }
 
-        $answer = 404;
+        $this->answer = 404;
         self::assertFalse($drive->exists('a.txt'), 'a 404 is a missing file');
         $this->expectException(\Omnidrive\Exception\FileNotFoundException::class);
         $drive->read('a.txt');
